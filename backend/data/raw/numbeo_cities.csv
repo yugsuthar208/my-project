@@ -1,0 +1,26 @@
+city_name,country,region,cost_of_living_index,rent_index,restaurant_price_index,lat,lon,safety_index,budget_tier
+Goa,India,West & Rajasthan,45.0,20.0,35.0,15.2993,74.124,78.0,budget
+Udaipur,India,West & Rajasthan,55.0,22.0,35.0,24.5854,73.7125,88.0,mid-range
+Jaipur,India,West & Rajasthan,40.0,18.0,30.0,26.9124,75.7873,75.0,budget
+Manali,India,North India (Himalayas),50.0,22.0,32.0,32.2396,77.1887,86.0,budget
+Leh Ladakh,India,North India (Himalayas),65.0,25.0,35.0,34.1526,77.5771,92.0,mid-range
+Srinagar,India,North India (Himalayas),55.0,20.0,35.0,34.0837,74.7973,78.0,mid-range
+Shimla,India,North India (Himalayas),48.0,20.0,30.0,31.1048,77.1734,88.0,budget
+Rishikesh,India,North India (Himalayas),40.0,16.0,25.0,30.0869,78.2676,88.0,budget
+Munnar,India,South India & Western Ghats,45.0,20.0,28.0,10.0889,77.0595,92.0,budget
+Alleppey,India,South India & Western Ghats,55.0,22.0,30.0,9.4981,76.3388,90.0,mid-range
+Hampi,India,South India & Western Ghats,38.0,14.0,22.0,15.335,76.46,86.0,budget
+Coorg,India,South India & Western Ghats,52.0,22.0,32.0,12.3375,75.8069,90.0,mid-range
+Pondicherry,India,South India & Western Ghats,50.0,22.0,35.0,11.9416,79.8083,88.0,mid-range
+Darjeeling,India,East & Northeast,46.0,18.0,28.0,27.041,88.2663,90.0,budget
+Shillong,India,East & Northeast,48.0,18.0,28.0,25.5788,91.8933,92.0,budget
+Kolkata,India,East & Northeast,45.0,20.0,26.0,22.5726,88.3639,82.0,budget
+Varanasi,India,Central & Spiritual,38.0,16.0,22.0,25.3176,82.9739,80.0,budget
+Agra,India,Central & Spiritual,45.0,18.0,30.0,27.1767,78.0081,78.0,budget
+Amritsar,India,Central & Spiritual,42.0,18.0,26.0,31.634,74.8723,90.0,budget
+Ayodhya,India,Central & Spiritual,38.0,16.0,22.0,26.7922,82.1998,88.0,budget
+Rann of Kutch,India,West & Rajasthan,60.0,20.0,35.0,23.8342,69.8329,92.0,mid-range
+Ahmedabad,India,West & Rajasthan,45.0,22.0,30.0,23.0225,72.5714,86.0,budget
+Mumbai,India,West & Rajasthan,55.0,35.0,40.0,19.076,72.8777,76.0,mid-range
+Delhi,India,Central & Spiritual,50.0,28.0,38.0,28.6139,77.209,68.0,mid-range
+Bengaluru,India,South India & Western Ghats,55.0,30.0,42.0,12.9716,77.5946,78.0,mid-range
