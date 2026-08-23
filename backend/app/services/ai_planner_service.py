@@ -95,6 +95,10 @@ class AIPlannerService:
         if not settings.GEMINI_API_KEY:
             return None
 
+        grounded_section = ""
+        if grounded_poi_context:
+            grounded_section = f"VERIFIED REAL-WORLD TOURISM DATASET & ATTRACTION POOL (SELECT & RANK THE BEST ONES):\n{grounded_poi_context}\n"
+
         prompt = f"""
         You are the Master Travel Architect for Tripora Luxury Travel.
         Generate a comprehensive, high-end travel blueprint for:
@@ -108,7 +112,7 @@ class AIPlannerService:
         - Dietary Preference: {dietary_preference}
         - Passions & Interests: {', '.join(interests)}
 
-        {f"VERIFIED REAL-WORLD TOURISM DATASET & ATTRACTION POOL (SELECT & RANK THE BEST ONES):\n{grounded_poi_context}" if grounded_poi_context else ""}
+        {grounded_section}
 
         You MUST respond ONLY with valid JSON following this exact JSON structure:
         {{
