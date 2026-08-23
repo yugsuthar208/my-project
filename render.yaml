@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: tripora-backend
+    runtime: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.11.0"
+      - key: ENVIRONMENT
+        value: production
+      - key: SECRET_KEY
+        generateValue: true          # Render auto-generates a secure random value
+      - key: GEMINI_API_KEY
+        sync: false                  # You fill this in the Render dashboard
+      - key: DATABASE_URL
+        sync: false                  # You fill this in the Render dashboard (or leave blank for SQLite)

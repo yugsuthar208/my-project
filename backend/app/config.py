@@ -17,6 +17,10 @@ class Settings(BaseSettings):
         "http://127.0.0.1:3000",
         "http://localhost:8000",
         "http://127.0.0.1:8000",
+        # Vercel production deployments
+        "https://frontend-one-orpin-53.vercel.app",
+        "https://frontend-g1yqbre96-yug202.vercel.app",
+        "https://tripora-app.vercel.app",
     ]
     
     # Database configuration (Defaults to PostgreSQL asyncpg, falls back to SQLite for local tests)
