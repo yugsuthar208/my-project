@@ -43,12 +43,16 @@ class HybridRecommender:
         if not embeddings_path.exists() or not city_ids_path.exists():
             logger.warning(f"Recommender artifacts not found in {self.models_dir}. Run python app/ml/train.py first.")
         try:
-            # Load SentenceTransformer with fast local cache preference
-            from sentence_transformers import SentenceTransformer
+            # Load SentenceTransformer if available, otherwise rely on precomputed embeddings
             try:
-                self.sentence_model = SentenceTransformer("all-MiniLM-L6-v2", cache_folder=cache_folder, local_files_only=True)
-            except Exception:
-                self.sentence_model = SentenceTransformer("all-MiniLM-L6-v2", cache_folder=cache_folder)
+                from sentence_transformers import SentenceTransformer
+                try:
+                    self.sentence_model = SentenceTransformer("all-MiniLM-L6-v2", cache_folder=cache_folder, local_files_only=True)
+                except Exception:
+                    self.sentence_model = SentenceTransformer("all-MiniLM-L6-v2", cache_folder=cache_folder)
+            except ImportError:
+                logger.info("SentenceTransformers not installed in production; using precomputed NumPy embeddings.")
+                self.sentence_model = None
 
             # Load precomputed embeddings & IDs
             self.city_embeddings = np.load(str(embeddings_path))
