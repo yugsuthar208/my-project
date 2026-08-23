@@ -37,33 +37,41 @@ logger = logging.getLogger("TriporaBharatAPI")
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """
-    Application lifespan events:
-    - Automatically creates/synchronizes all database tables.
-    - Preloads Scikit-Learn / XGBoost and SentenceTransformer models into app.state.
-    - Logs startup and teardown messages.
-    """
-    print("[Tripora Bharat API] Initializing database schema...")
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
+    """Fast non-blocking startup for cloud hosting."""
+    print("[Tripora Bharat API] Starting up...")
+    
+    async def init_background():
+        try:
+            print("[Tripora Bharat API] Initializing database schema...")
+            async with engine.begin() as conn:
+                await conn.run_sync(Base.metadata.create_all)
+            print("[Tripora Bharat API] Database initialized.")
+        except Exception as e:
+            logger.error(f"Database init error: {e}")
+        
+        try:
+            app.state.budget_predictor = BudgetPredictor()
+            app.state.budget_predictor.load()
+        except Exception as e:
+            logger.warning(f"ML BudgetPredictor load notice: {e}")
 
-    print("[Tripora Bharat API] Initializing upgraded ML modules...")
-    app.state.budget_predictor = BudgetPredictor()
-    try:
-        app.state.budget_predictor.load()
-    except Exception as e:
-        logger.warning(f"ML BudgetPredictor load notice: {e}")
+        try:
+            app.state.recommender = HybridRecommender()
+            app.state.recommender.load()
+        except Exception as e:
+            logger.warning(f"ML Recommender load notice: {e}")
 
-    app.state.recommender = HybridRecommender()
     import asyncio
-    asyncio.create_task(asyncio.to_thread(app.state.recommender.load))
+    asyncio.create_task(init_background())
 
-    print("Tripora Bharat API started")
-
+    print("Tripora Bharat API server ready and listening.")
     yield
 
-    await engine.dispose()
-    print("[Tripora Bharat API] Database connections closed.")
+    try:
+        await engine.dispose()
+        print("[Tripora Bharat API] Database connections closed.")
+    except Exception:
+        pass
 
 
 # FastAPI Application Instance
