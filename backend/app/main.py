@@ -91,15 +91,25 @@ app.add_middleware(ObservabilityMiddleware)
 # CORS Middleware
 origins = settings.BACKEND_CORS_ORIGINS
 if isinstance(origins, str):
-    origins = [item.strip() for item in origins.split(",")]
+    origins = [item.strip() for item in origins.split(",") if item.strip()]
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+if "*" in origins:
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origin_regex=r"https?://.*",
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+else:
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=origins,
+        allow_origin_regex=r"https?://.*\.vercel\.app",
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
 
 
 # ============================================================================
