@@ -150,6 +150,12 @@ async def global_exception_handler(request: Request, exc: Exception):
 # HEALTH & METRICS ENDPOINTS
 # ============================================================================
 
+@app.get("/", tags=["Health"])
+async def root_ping():
+    """Root ping endpoint."""
+    return {"status": "ok", "app": "Tripora Bharat API", "version": "1.0.0"}
+
+
 @app.get("/health", tags=["Health"])
 async def health_check():
     """Service health check endpoint."""
