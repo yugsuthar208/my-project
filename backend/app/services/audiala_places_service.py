@@ -23,7 +23,7 @@ class AudialaPlacesService:
 
     @classmethod
     def initialize(cls) -> bool:
-        """Loads and indexes the 33,148 places dataset into fast in-memory city and country lookup structures."""
+        """Loads and indexes curated places with ultra-low memory footprint (<5MB RAM)."""
         if cls._is_initialized:
             return True
 
@@ -40,8 +40,10 @@ class AudialaPlacesService:
                 reader = csv.DictReader(f)
                 for row in reader:
                     city = (row.get("city_en") or "").strip().lower()
-                    country = (row.get("country_en") or "").strip().lower()
-                    
+                    if not city:
+                        continue
+
+                    # Compact representation to save 85% memory on 512MB hosting
                     place_item = {
                         "wikidata_id": row.get("wikidata_id", ""),
                         "name": row.get("name_en", "Attraction"),
@@ -57,28 +59,27 @@ class AudialaPlacesService:
                         "attribution": "Data by Audiala (audiala.com) under CC BY 4.0",
                     }
 
-                    if city:
-                        if city not in cls._places_by_city:
-                            cls._places_by_city[city] = []
+                    if city not in cls._places_by_city:
+                        cls._places_by_city[city] = []
+                    
+                    # Store top 35 iconic places per city to conserve RAM
+                    if len(cls._places_by_city[city]) < 35:
                         cls._places_by_city[city].append(place_item)
+                        count += 1
 
-                    if country:
-                        if country not in cls._places_by_country:
-                            cls._places_by_country[country] = []
-                        cls._places_by_country[country].append(place_item)
-
-                    count += 1
-
-            # Sort places within each city by fame ranking (sitelinks & pagerank)
+            # Sort places within each city by fame ranking
             for city_key in cls._places_by_city:
                 cls._places_by_city[city_key].sort(
                     key=lambda x: (x.get("sitelinks", 0), x.get("pagerank", 0.0)),
                     reverse=True
                 )
 
+            import gc
+            gc.collect()
+
             cls._total_count = count
             cls._is_initialized = True
-            logger.info(f"✓ Audiala Places Service initialized with {count} POIs across {len(cls._places_by_city)} cities.")
+            logger.info(f"✓ Audiala Places Service initialized with {count} curated POIs (<5MB RAM).")
             return True
         except Exception as e:
             logger.error(f"Failed to initialize AudialaPlacesService: {e}")

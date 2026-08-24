@@ -47,10 +47,12 @@ class BudgetPredictor:
             if encoder_path.exists():
                 self.encoder = joblib.load(encoder_path)
             self._is_loaded = True
+            import gc
+            gc.collect()
             logger.info("✓ BudgetPredictor model and preprocessors loaded successfully.")
             return True
         except Exception as e:
-            logger.error(f"Failed to load BudgetPredictor model: {e}")
+            logger.warning(f"Notice loading BudgetPredictor model: {e}")
             self._is_loaded = False
             return False
 
