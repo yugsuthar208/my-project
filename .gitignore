@@ -62,3 +62,4 @@ backend/app/ml/models/sentence_model/
 backend/data/audiala_open_data/
 node_modules/
 .npm/
+.vercel

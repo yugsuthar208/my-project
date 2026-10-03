@@ -340,6 +340,10 @@ class AIPlannerService:
 
         dest_cities = resolved_cities[1:] if len(resolved_cities) > 1 else resolved_cities
 
+        live_city_intel = {}
+        for c in dest_cities:
+            live_city_intel[c.name] = await LiveSearchService.get_live_city_intel(c.name, budget_tier)
+
         # 2. Assemble Grounded POI Knowledge Bank directly from Audiala 33K+ dataset & regional catalog (0ms latency)
         from app.services.audiala_places_service import AudialaPlacesService
         from app.services.destination_knowledge import get_curated_destination_pool
